@@ -23,7 +23,7 @@ namespace :foreman do
 
     command %{
       echo "-----> Exporting foreman procfile for #{fetch(:foreman_app)}"
-      #{echo_cmd %[cd #{fetch(:deploy_to)}/#{fetch(:current_path)} ; #{export_cmd}]}
+      #{echo_cmd %[cd #{fetch(:current_path)} ; #{export_cmd}]}
     }
   end
 
