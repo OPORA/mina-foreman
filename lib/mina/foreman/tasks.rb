@@ -65,7 +65,7 @@ namespace :foreman do
 
     command echo_cmd case fetch(:foreman_format)
                      when 'systemd'
-                       %[sudo systemctl restart #{fetch(:foreman_service)}]
+                       %[sudo systemctl daemon-reload && sudo systemctl restart #{fetch(:foreman_service)}]
                      else
                        %[sudo start #{fetch(:foreman_service)} || sudo restart #{fetch(:foreman_service)}]
                      end
