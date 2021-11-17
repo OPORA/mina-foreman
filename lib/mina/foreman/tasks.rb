@@ -18,7 +18,7 @@ set :foreman_procfile, 'Procfile'
 namespace :foreman do
   desc 'Export the Procfile to Ubuntu upstart scripts'
   task :export do
-    sudo_cmd = "sudo" if fetch(:foreman_sudo)
+    sudo_cmd = "rvmsudo" if fetch(:foreman_sudo)
     export_cmd = "#{sudo_cmd} bundle exec foreman export #{fetch(:foreman_format)} #{fetch(:foreman_location)} -a #{fetch(:foreman_app)} -u #{fetch(:foreman_user)} -d #{fetch(:deploy_to)}/#{fetch(:current_path)} -l #{fetch(:foreman_log)} -f #{fetch(:foreman_procfile)}"
 
     command %{
