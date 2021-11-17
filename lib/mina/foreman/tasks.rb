@@ -3,7 +3,15 @@ set :foreman_user, -> { fetch(:user) }
 set :foreman_log,  -> { "#{fetch(:deploy_to)}/#{fetch(:shared_path)}/log" }
 set :foreman_sudo, true
 set :foreman_format, 'systemd'
-set :foreman_location, '/etc/init'
+set :foreman_location, -> {
+  case fetch(:foreman_format)
+  when 'systemd'
+    '/etc/systemd/system'
+  else
+    '/etc/init'
+  end
+}
+set :foreman_location, 
 set :foreman_service, -> {
   case fetch(:foreman_format)
   when 'systemd'
@@ -19,7 +27,7 @@ namespace :foreman do
   desc 'Export the Procfile to Ubuntu upstart scripts'
   task :export do
     sudo_cmd = "rvmsudo" if fetch(:foreman_sudo)
-    export_cmd = "#{sudo_cmd} bundle exec foreman export #{fetch(:foreman_format)} #{fetch(:foreman_location)} -a #{fetch(:foreman_app)} -u #{fetch(:foreman_user)} -d #{fetch(:deploy_to)}/#{fetch(:current_path)} -l #{fetch(:foreman_log)} -f #{fetch(:foreman_procfile)}"
+    export_cmd = "#{sudo_cmd} bundle exec foreman export #{fetch(:foreman_format)} #{fetch(:foreman_location)} -a #{fetch(:foreman_app)} -u #{fetch(:foreman_user)} -d #{fetch(:current_path)} -l #{fetch(:foreman_log)} -f #{fetch(:foreman_procfile)}"
 
     command %{
       echo "-----> Exporting foreman procfile for #{fetch(:foreman_app)}"
