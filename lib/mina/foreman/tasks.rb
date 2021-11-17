@@ -11,7 +11,6 @@ set :foreman_location, -> {
     '/etc/init'
   end
 }
-set :foreman_location, 
 set :foreman_service, -> {
   case fetch(:foreman_format)
   when 'systemd'
